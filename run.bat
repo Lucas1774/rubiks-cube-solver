@@ -1,1 +1,2 @@
-.\solveGenerator.exe src/letterPairs.csv
+.\statisticsGenerator.exe
+PAUSE
