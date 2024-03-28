@@ -252,20 +252,32 @@ int main(int argc, char *argv[]) {
         twisted_corner_frequency[twist_corners.size() / 2]++;
         twisted_edge_frequency[twist_edges.size() / 2]++;
     }
-    cout << fixed << setprecision(10);
 
+    cout << fixed << setprecision(10);
+    double expected_value = 0;
     for (int i = 0; i < 11; i++) {
         cout << i << " corner targets frequency: " << (double)corner_targets_frequency[i] / REPETITIONS << endl;
+        expected_value += (double)i * corner_targets_frequency[i];
     }
+    cout << "Expected value: " << expected_value / REPETITIONS << endl;
+    expected_value = 0;
     for (int i = 0; i < 17; i++) {
         cout << i << " edge targets frequency: " << (double)edge_targets_frequency[i] / REPETITIONS << endl;
+        expected_value += (double)i * edge_targets_frequency[i];
     }
+    cout << "Expected value: " << expected_value / REPETITIONS << endl;
+    expected_value = 0;
     for (int i = 0; i < 8; i++) {
         cout << i << " twisted corner frequency: " << (double)twisted_corner_frequency[i] / REPETITIONS << endl;
+        expected_value += (double)i * twisted_corner_frequency[i];
     }
+    cout << "Expected value: " << expected_value / REPETITIONS << endl;
+    expected_value = 0;
     for (int i = 0; i < 12; i++) {
         cout << i << " twisted edge frequency: " << (double)twisted_edge_frequency[i] / REPETITIONS << endl;
+        expected_value += (double)i * twisted_edge_frequency[i];
     }
+    cout << "Expected value: " << expected_value / REPETITIONS << endl;
 
     return 0;
 }
