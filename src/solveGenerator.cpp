@@ -20,7 +20,7 @@ const string parity_path = "src/parityAlgs.csv";
 const string corners_path = "src/cornerAlgs.csv";
 const string edges_path = "src/edgeAlgs.csv";
 const string emptyScramble = "";
-const string scrambleMoves[3][6] = {{"U ", "U2 ", "U' ", "D ", "D2 ", "D' "}, {"F ", "F2 ", "F' ", "B ", "B2 ", "B' "}, {"R ", "R2 ", "R' ", "L ", "L2 ", "L' "}};
+const string scrambleMoves[6][3] = {{"U ", "U2 ", "U' "}, {"D ", "D2 ", "D' "}, {"F ", "F2 ", "F' "}, {"B ", "B2 ", "B' "}, {"R ", "R2 ", "R' "}, {"L ", "L2 ", "L' "}};
 const array24 solvedState_corners = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
 const matrix6by12 stickerPermutations_corners = {{0, 3, 9, 6, 1, 4, 10, 7, 2, 5, 11, 8}, {12, 15, 18, 21, 13, 16, 19, 22, 14, 17, 20, 23}, {0, 17, 12, 5, 1, 15, 13, 3, 2, 16, 14, 4}, {6, 10, 21, 19, 7, 11, 22, 20, 8, 9, 23, 18}, {0, 7, 18, 16, 1, 8, 19, 17, 2, 6, 20, 15}, {3, 14, 21, 11, 4, 12, 22, 9, 5, 13, 23, 10}};
 const string letters_corners = "0SFMXBRVPUNLITCOYJEKDAHZ";
@@ -32,12 +32,11 @@ const array24 alphabet_edges = {23, 22, 15, 16, 11, 12, 18, 19, 5, 6, 2, 1, 8, 2
 
 int main(int argc, char *argv[])
 {
-
     char option;
     string aux;
-    int seed1, seed2;
-    int turnIterator, turnLayer;
+    int turnLayer, turnIterator;
     string scramble;
+    vector<int> scrambleAsIndexTupleSequence;
     array24 scrambledState_corners, scrambledState_edges;
     int numberSolved_corners, newTarget_corners, cyclePiece_corners, aux_corners;
     bool isSolved_corners[numberOfPieces_corners];
@@ -91,6 +90,7 @@ int main(int argc, char *argv[])
     {
         // reset
         scramble = emptyScramble;
+        scrambleAsIndexTupleSequence.clear();
         for (int i = 0; i < numberOfStickers; i++)
         {
             scrambledState_corners[i] = solvedState_corners[i];
@@ -117,16 +117,48 @@ int main(int argc, char *argv[])
         isDirect_parity = false;
 
         // generate scramble
-        seed1 = rand() % 3;
+        int lastMoveIndex = -1;
+        int secondToLastMoveIndex = -1;
         for (int i = 0; i < scrambleLength; i++)
         {
-            seed1 = (seed1 + (rand() % 2) + 1) % 3;
-            seed2 = rand() % 6;
-            scramble += scrambleMoves[seed1][seed2];
-            // do scramble
-            turnIterator = 1 + (seed2 % 3);
-            turnLayer = 2 * seed1 + floor(seed2 / 3);
-            for (int j = 0; j < turnIterator; j++)
+            if (0 == i)
+            {
+                turnLayer = rand() % 6;
+            }
+            else if (1 == i || lastMoveIndex / 2 != secondToLastMoveIndex / 2)
+            {
+                turnLayer = rand() % 5;
+                if (turnLayer == lastMoveIndex)
+                {
+                    turnLayer++;
+                }
+            }
+            else
+            {
+                turnLayer = rand() % 4;
+                if (turnLayer == secondToLastMoveIndex)
+                {
+                    turnLayer += 2;
+                }
+                else if (turnLayer == lastMoveIndex)
+                {
+                    turnLayer++;
+                }
+            }
+            turnIterator = rand() % 3;
+            scramble += scrambleMoves[turnLayer][turnIterator];
+            scrambleAsIndexTupleSequence.push_back(turnLayer);
+            scrambleAsIndexTupleSequence.push_back(turnIterator);
+            secondToLastMoveIndex = lastMoveIndex;
+            lastMoveIndex = turnLayer;
+        }
+
+        // do scramble
+        for (int i = 0; i < scrambleAsIndexTupleSequence.size() / 2; i++)
+        {
+            turnLayer = scrambleAsIndexTupleSequence[i * 2];
+            turnIterator = scrambleAsIndexTupleSequence[i * 2 + 1];
+            for (int j = 0; j <= turnIterator; j++)
             {
                 int aux_corners, aux_edges;
                 aux_corners = scrambledState_corners[stickerPermutations_corners[turnLayer][0]];
