@@ -1,4 +1,4 @@
-## Program
+# Program
 
 I wrote this around 6 months after my first ever hello world program, so I would change a lot today. It was also my very first contact with c++. I didn't know how to compile c++ code, in fact, I must have heard the word "compile" a couple of times before.
 I added the parsing functions just now, since that sounded like too much for me to do back then, as well as the logic of the arguments (which I'm glad I could fit in with no work at all).
@@ -23,7 +23,7 @@ For the parity algorithms, the first two are (UF-UR)-(UFR-UFL) and (UF-UR)-(UFR-
 For the letter pairs, every combination but those including buffer stickers (23 * 23) must appear in the order ABCDEFJHIKLMNOPRSTUVYZX (it's not exactly alphabetic because I actually use numbers for the *-X or X-* tuples), this is, A-A, A-B... ...X-X.  
 If I were to rewrite this program today, I would make it so, for sequences, every combination starting with 0-0 and ending with 23-23 must appear (even for parity), and for letter pairs, it appears every one starting with whatever letter the sticker 0 corresponds to and ending with whichever one the sticker 23 does. I could even store this data in a mySQL database, although there wouldn't be much point. In any case, it would be stored in tables and the access would be direct and not the indexing nightmare this was.
 
-This is the key the program uses to define scrambled states and pick algorithms from the database.    
+This is the key the program uses to define scrambled states and pick algorithms from the database.
 The letter code is implemented in the "alphabet" arrays: the value in spot 1 of the corners one is 16 because sticker 1 corresponds to the letter 16 (S).
 
                          |-----||-----||-----|
