@@ -12,12 +12,9 @@ const int SCRAMBLE_LENGTH = 25;
 const int NUMBER_OF_STICKERS = 24;
 const int NUMBER_OF_EDGES = 12;
 const int NUMBER_OF_CORNERS = 8;
-const string CORNER = "CORNER";
-const string EDGE = "EDGE";
 const string PARITY_PATH = "src/parityAlgs.csv";
 const string CORNERS_PATH = "src/cornerAlgs.csv";
 const string EDGES_PATH = "src/edgeAlgs.csv";
-const string EMPTY_SCRAMBLE = "";
 const string SCRAMBLE_MOVES[6][3] = {{"U ", "U2 ", "U' "}, {"D ", "D2 ", "D' "}, {"F ", "F2 ", "F' "}, {"B ", "B2 ", "B' "}, {"R ", "R2 ", "R' "}, {"L ", "L2 ", "L' "}};
 const int SOLVED_STATE_CORNERS[NUMBER_OF_STICKERS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
 const int STICKER_PERMUTATIONS_CORNERS[6][12] = {{0, 3, 9, 6, 1, 4, 10, 7, 2, 5, 11, 8}, {12, 15, 18, 21, 13, 16, 19, 22, 14, 17, 20, 23}, {0, 17, 12, 5, 1, 15, 13, 3, 2, 16, 14, 4}, {6, 10, 21, 19, 7, 11, 22, 20, 8, 9, 23, 18}, {0, 7, 18, 16, 1, 8, 19, 17, 2, 6, 20, 15}, {3, 14, 21, 11, 4, 12, 22, 9, 5, 13, 23, 10}};
@@ -65,7 +62,7 @@ int main(int argc, char *argv[]) {
     char option = 'y';
     while (option != 'n') {
         // generate scramble
-        string scramble = EMPTY_SCRAMBLE;
+        string scramble = "";
         vector<int> scramble_as_index_tuple_vector;
         int last_move_index = -1;
         int second_to_last_move_index = -1;
@@ -179,13 +176,13 @@ int main(int argc, char *argv[]) {
                 }
             }
             // exhaust cycle
-            while (floor(new_target_corners / 3) != cycle_piece_corners) {
+            while (new_target_corners / 3 != cycle_piece_corners) {
                 path_corners.push_back(new_target_corners);
                 is_solved_corners[new_target_corners / 3] = true;
                 new_target_corners = scrambled_state_corners[new_target_corners];
                 number_solved_corners++;
                 // if its not default buffer
-                if (floor(new_target_corners / 3) == cycle_piece_corners && cycle_piece_corners != 0) {
+                if (new_target_corners / 3 == cycle_piece_corners && cycle_piece_corners != 0) {
                     path_corners.push_back(new_target_corners);
                 }
             }
@@ -230,13 +227,13 @@ int main(int argc, char *argv[]) {
                 }
             }
             // exhaust cycle
-            while (floor(new_target_edges / 2) != cycle_piece_edges) {
+            while (new_target_edges / 2 != cycle_piece_edges) {
                 path_edges.push_back(new_target_edges);
                 is_solved_edges[new_target_edges / 2] = true;
                 new_target_edges = scrambled_state_edges[new_target_edges];
                 number_solved_edges++;
                 // if its not default buffer
-                if (floor(new_target_edges / 2) == cycle_piece_edges && cycle_piece_edges != 0) {
+                if (new_target_edges / 2 == cycle_piece_edges && cycle_piece_edges != 0) {
                     path_edges.push_back(new_target_edges);
                 }
             }
